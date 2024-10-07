@@ -65,4 +65,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("io.insert-koin:koin-androidx-compose:3.4.1")
     implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("com.google.code.gson:gson:2.8.8")
 }
