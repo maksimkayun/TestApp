@@ -1,4 +1,4 @@
-package com.example.domain.entity
+package com.example.domain.data.entity
 
 data class ListButton(
     val title: String,

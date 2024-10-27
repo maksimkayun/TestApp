@@ -1,6 +1,7 @@
 package com.example.testapp.main.vm
 
-import com.example.domain.entity.ListElement
+import com.example.domain.data.entity.ListElement
+import com.example.domain.entity.ListElementEntity
 
 sealed class MainState {
     object Loading : MainState()
@@ -9,6 +10,6 @@ sealed class MainState {
     ) : MainState()
 
     data class Content(
-        val list: List<ListElement>
+        val list: List<ListElementEntity>
     ) : MainState()
 }
