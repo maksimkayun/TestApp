@@ -27,11 +27,20 @@ import com.example.testapp.details.DetailsScreenRoute
 import com.example.testapp.main.vm.MainState
 import com.example.testapp.main.vm.MainViewModel
 import com.example.testapp.ui.view.Like
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
+    // Добавляем эффект для обновления при возврате на экран
+    LaunchedEffect(Unit) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Когда возвращаемся на главный экран, обновляем данные
+            viewModel.refresh()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         when (val st = state) {
             is MainState.Content -> {
@@ -42,11 +51,9 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel = koinView
                     viewModel.like(element, like)
                 }
             }
-
             is MainState.Error -> {
                 ErrorState(st.message)
             }
-
             MainState.Loading -> {
                 Text(text = "Загрузка...")
             }

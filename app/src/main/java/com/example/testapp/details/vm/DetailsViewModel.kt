@@ -61,5 +61,6 @@ class DetailsViewModel(
 
     fun like(elementEntity: ListElementEntity, like: Boolean) {
         storage.like(elementEntity.id, like)
+        loadContent() // Перезагружаем контент после изменения лайка
     }
 }

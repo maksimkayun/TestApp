@@ -21,7 +21,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<MainState>(MainState.Loading)
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch {
             _state.emit(MainState.Error(throwable.message ?: "Ошибочка"))
         }
@@ -30,16 +30,23 @@ class MainViewModel(
     val state: StateFlow<MainState>
         get() = _state
 
-
     init {
+        loadContent()
+    }
+
+    private fun loadContent() {
         viewModelScope.launch(context = exceptionHandler) {
             val result = useCase.execute(Unit)
             _state.emit(MainState.Content(result))
         }
-        Timber.e(handle.toRoute<MainScreenRoute>().toString())
+    }
+
+    fun refresh() {
+        loadContent()
     }
 
     fun like(elementEntity: ListElementEntity, like: Boolean) {
         localStorageRepository.like(elementEntity.id, like)
+        loadContent() // Обновляем список после изменения лайка
     }
 }
